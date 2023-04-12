@@ -4,6 +4,9 @@ using Azure.ResourceManager;
 using Azure.ResourceManager.EventGrid.Models;
 using Azure.ResourceManager.EventGrid;
 using Azure.ResourceManager.Resources;
+using Azure.ResourceManager.Relay;
+using Azure.ResourceManager.Relay.Models;
+
 namespace Fx.ArmManager
 {
     public enum Resource 
@@ -25,21 +28,21 @@ namespace Fx.ArmManager
         }
 
 
-        public SubscriptionResource SetDefaultSubscription()
+        public async Task<SubscriptionResource> SetDefaultSubscriptionAsync()
         {
             if (Client == null) { throw new NullReferenceException(nameof(Client)); }
 
-            return _sub = Client.GetDefaultSubscription(); ;
+            return _sub = await Client.GetDefaultSubscriptionAsync(); ;
 
         }
 
-        public ResourceGroupResource SetDefaultResourceGroup(string resourcegroupname)
+        public async Task<ResourceGroupResource> SetDefaultResourceGroupAsync(string resourcegroupname)
         {
             if (string.IsNullOrEmpty(resourcegroupname)) { throw new ArgumentNullException(nameof(resourcegroupname)); }
             if (_sub == null) { throw new NullReferenceException(nameof(_sub)); }
-            return _group = _sub.GetResourceGroup(resourcegroupname);
+            return _group = await _sub.GetResourceGroupAsync(resourcegroupname);
         }
-        public async Task<(Uri endpoint, string key)> GetEventGridConnectionInfos(string topicname)
+        public async Task<(Uri endpoint, string key)> GetEventGridConnectionInfosAsync(string topicname)
         {
             
             if (string.IsNullOrEmpty(topicname)) { throw new ArgumentNullException(nameof(topicname)); }
@@ -59,7 +62,28 @@ namespace Fx.ArmManager
           
         }
 
+        public async Task<string> GetRelayKeyAsync(string relaynamespace,string hybridconnection, string saskeyname)
+        {
+            if (relaynamespace==null) { throw  new ArgumentNullException(nameof(relaynamespace)); }
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
 
+            RelayNamespaceResource relay=  await _group.GetRelayNamespaceAsync(relaynamespace);
+            //RelayHybridConnectionResource hcr= await relay.GetRelayHybridConnectionAsync(hybridconnection);
+            RelayNamespaceAuthorizationRuleResource rules = await relay.GetRelayNamespaceAuthorizationRuleAsync(saskeyname);
+
+            RelayAccessKeys keys =await rules.GetKeysAsync();
+
+            return keys.PrimaryKey;
+        }
+
+        public async Task EasyInitAsync(string resourcegroupname)
+        {
+            if (resourcegroupname == null) { throw new ArgumentNullException(nameof(resourcegroupname)); }
+            Login(new VisualStudioCredential());
+            await SetDefaultSubscriptionAsync();
+            await SetDefaultResourceGroupAsync(resourcegroupname);
+
+        }
 
     }  
 }

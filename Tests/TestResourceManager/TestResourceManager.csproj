@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Helpers\Fx.ArmManager\Fx.ArmManager.csproj" />
+    <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

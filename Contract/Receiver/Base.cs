@@ -6,7 +6,7 @@ namespace Fx.Receiver
     {
               
         public Action<string> Wait { get; set; }
-        public Action<string> ReturnMessage { get; set; }
+        public Action<string> Response { get; set; }
         
         
     }

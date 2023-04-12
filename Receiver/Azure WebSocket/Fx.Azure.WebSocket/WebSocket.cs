@@ -11,7 +11,7 @@ namespace Fx.Receiver
         public object Parameters { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IConfiguration? Configuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             Wait(MESSAGE);
         }

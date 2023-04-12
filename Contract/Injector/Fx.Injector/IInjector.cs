@@ -5,7 +5,7 @@ namespace Fx.Injector
     public interface IInjector
     {
         
-        public Task Send(object message);
+        public Task SendAsync(object message);
         
     }
 }

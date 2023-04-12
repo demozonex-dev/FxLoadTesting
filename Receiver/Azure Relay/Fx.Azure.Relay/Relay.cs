@@ -14,7 +14,7 @@ namespace Fx.Receiver
         private string _saskeyname;
         private string _key;
         //public IConfiguration? Configuration { get; set; }
-        const string MESSAGE = "Connected to Azure Relay HybridConnection";
+        const string MESSAGE = "Connected to Azure Relay HybridConnection, waiting for message";
         public Relay(string relaynamespace, string hybridconnection, string saskeyname, string key)
         {
             if (relaynamespace == null) { throw new ArgumentNullException(nameof(relaynamespace)); }
@@ -30,16 +30,19 @@ namespace Fx.Receiver
         }
         
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             
 
             if (Wait == null) throw new NullReferenceException(nameof(Wait));
-            if (ReturnMessage == null) throw new NullReferenceException(nameof(ReturnMessage));
+            if (Response == null) throw new NullReferenceException(nameof(Response));
             
             var tokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(_saskeyname, _key);
             
-            _listener = new HybridConnectionListener(new Uri(string.Format("sb://{0}/{1}", _relaynamespace, _hybridconnection)), tokenProvider);            
+            _listener = new HybridConnectionListener(new Uri(string.Format("sb://{0}.servicebus.windows.net/{1}", 
+                                                     _relaynamespace, 
+                                                     _hybridconnection)), 
+                                                     tokenProvider);            
             
 
             _listener.RequestHandler = (context) =>
@@ -56,9 +59,9 @@ namespace Fx.Receiver
         private void ProcessEventGridEvents(RelayedHttpListenerContext context)
         {            
             string message = new StreamReader(context.Request.InputStream).ReadToEnd();
-            if(ReturnMessage != null)
+            if(Response != null)
             {
-                ReturnMessage(message);
+                Response(message);
             }            
         }
         public async Task Stop()

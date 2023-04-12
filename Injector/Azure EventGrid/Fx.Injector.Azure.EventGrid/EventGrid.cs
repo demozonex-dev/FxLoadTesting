@@ -20,7 +20,7 @@ namespace Fx.Injector
         }
 
         
-        public async Task Send(object data)
+        public async Task SendAsync(object data)
         {
             if (_client == null) { throw new NullReferenceException(nameof(_client)); }
         

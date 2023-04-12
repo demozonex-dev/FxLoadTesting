@@ -6,11 +6,9 @@ namespace Fx.Receiver
     public interface IReceiver
     {
         
-        public Action<string> ReturnMessage { get; set; }
+        public Action<string> Response { get; set; }
         public Action<string> Wait { get; set; }
-        public Task Start(
-                          /*Action<string> wait, 
-                          Action<string> returnmessage*/);
+        public Task StartAsync();
         public Task Stop();
         
         

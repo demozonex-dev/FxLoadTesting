@@ -33,14 +33,24 @@ namespace TestResourceManager
             Assert.Pass();
         }
         [Test]
-        public async Task Test_GetEventGridInfo()
+        public async Task Test_GetRelayInfo()
         {
-            string? key = null;
-            Uri? endPointUri = null;
+            ResourceClient resourceClient = new ResourceClient();
+            resourceClient.Login(new VisualStudioCredential());
+            resourceClient.SetDefaultSubscriptionAsync();
+            resourceClient.SetDefaultResourceGroupAsync("cna100-rg");
 
-            key = System.Environment.GetEnvironmentVariable("EVENT_GRID_KEYS");
-            var uri= System.Environment.GetEnvironmentVariable("EVENT_GRID_END_POINT");
+            
+            string? resourceGroupName = "cna100-rg";
+            
 
+            string hybridConnection = "hcdeployment";
+            string relayNameSpace = "gridrelay100";
+
+            string sasKeyName = "RootManageSharedAccessKey";
+            string key = await resourceClient.GetRelayKeyAsync(relayNameSpace, hybridConnection, sasKeyName); 
+            Console.WriteLine($"{key}");
+            Assert.Pass();
 
         }
     }

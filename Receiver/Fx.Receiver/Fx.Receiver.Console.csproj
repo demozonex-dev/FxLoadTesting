@@ -15,12 +15,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Contract\Receiver\Fx.Receiver.csproj" />
+    <ProjectReference Include="..\..\Helpers\Fx.ArmManager\Fx.ArmManager.csproj" />
+    <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
     <ProjectReference Include="..\Azure Relay\Fx.Azure.Relay\Fx.Receiver.Relay.csproj" />
     <ProjectReference Include="..\Azure WebSocket\Fx.Azure.WebSocket\Fx.Receiver.WebSocket.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Appsettings.json">
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
