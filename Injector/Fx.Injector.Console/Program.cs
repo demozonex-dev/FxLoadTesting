@@ -36,7 +36,7 @@ static async Task SendMessageToEventGrid()
 
     // Get EndPoint and Key from Azure, so no need to stock the secrets
     ResourceClient resourceClient = new ResourceClient();
-    await resourceClient.EasyInitAsync(resourceGroupName);
+    await resourceClient.EasyInitAsync(resourceGroupName,new VisualStudioCredential());
 
     var eventGridConnecyionInfos = await resourceClient.GetEventGridConnectionInfosAsync(topicName);
 

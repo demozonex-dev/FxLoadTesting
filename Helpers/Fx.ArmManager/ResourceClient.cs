@@ -76,24 +76,11 @@ namespace Fx.ArmManager
             return keys.PrimaryKey;
         }
 
-        public async Task EasyInitAsync(string resourcegroupname, bool interactive=true)
+        public async Task EasyInitAsync(string resourcegroupname, TokenCredential tokenCredential)
         {
             if (resourcegroupname == null) { throw new ArgumentNullException(nameof(resourcegroupname)); }
-            if (interactive)
-            {
-                
-                
-                Login(new InteractiveBrowserCredential());
 
-                InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions();
-                //options.TokenCachePersistenceOptions = new TokenCachePersistenceOptions();
-                //Login(new InteractiveBrowserCredential(options));
-
-            }
-            else
-            {
-                Login(new VisualStudioCredential());
-            }
+            Login(tokenCredential);
 
 
             await SetDefaultSubscriptionAsync();

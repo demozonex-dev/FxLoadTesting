@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Azure.Identity;
 using Fx.ArmManager;
 using Fx.Receiver;
 using Microsoft.Extensions.Configuration;
@@ -41,8 +42,9 @@ static async Task RelayReceiver()
     string? sasKeyName = section["saskeyname"];
     if (sasKeyName == null) { throw new NullReferenceException(nameof(sasKeyName)); }
 
+    //TODO : Test if Linux or Windows to authenticate with the right Credential
     ResourceClient resourceClient = new ResourceClient();
-    await resourceClient.EasyInitAsync(resourceGroupName);
+    await resourceClient.EasyInitAsync(resourceGroupName, new DeviceCodeCredential());
 
     string key = await resourceClient.GetRelayKeyAsync(relayNameSpace, hybridConnection, sasKeyName);
 
