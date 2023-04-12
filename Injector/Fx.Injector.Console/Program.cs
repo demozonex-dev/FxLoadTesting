@@ -44,9 +44,8 @@ static async Task SendMessageToEventGrid()
 
     Data data = new Data
     {
-        Nom = "Vernié",
-        Prenom = "Eric",
-        Age = 58,
+        Id = Guid.NewGuid().ToString(),
+        Description= "Démonstration d'un message envoyé via EventGrid",        
         Date = DateTime.Now
     };
     for(int i=1;i<=5;i++)
@@ -60,9 +59,8 @@ static async Task SendMessageToEventGrid()
 }
 
 class Data
-{
-    public int Age { get; set; }
-    public string Nom { get; set; }
-    public string Prenom { get; set; }
+{    
+    public string Id { get; set; }
+    public string Description { get; set; }
     public DateTime Date { get; set; }
 };
