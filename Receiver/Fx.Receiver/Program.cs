@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Fx.Receiver;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
 
 Action<string> Wait = (message) =>
 {
@@ -15,12 +13,17 @@ Action<string> Wait = (message) =>
 };
 Action<string> ReturnMessage = (message) =>
 {
+    Console.WriteLine("new message");
     Console.WriteLine(message);
 };
 
 
+string hybridConnection = "hcdeployment";
+string sasKeyName = "RootManageSharedAccessKey";
+string key = "ob1a86m5cn7v9WQBEx8TEDNxx3Q9+C39L+ARmFOKj1Y=";
+string relayNameSpace = "gridrelay100.servicebus.windows.net";
 
-IReceiver receiver = new Relay(CreateConfiguration());
+IReceiver receiver = new Relay(relayNameSpace,hybridConnection,sasKeyName,key);
 
 
 
@@ -28,24 +31,4 @@ receiver.Wait = Wait;
 receiver.ReturnMessage = ReturnMessage;
 await receiver.Start();
 
-IConfigurationRoot CreateConfiguration()
-{
-    ConfigurationBuilder configuration = new ConfigurationBuilder();
-    configuration.AddJsonFile("appsettings.json", true, true);
-    
-    //Read the user secrets from the secrets.json files
-    //The id change for each pc
-    configuration.AddUserSecrets("fa016515-f620-4f83-a9c5-67501e23557e");
-    return configuration.Build();
-}
 
-
-IReceiver CreateReceiver42(string path, string type)
-{
-    //Read from AppSettings.json
-    //var assembly = Assembly.LoadFile(path);
-    var assembly = Assembly.LoadFrom(path);
-
-    return (IReceiver)assembly.CreateInstance(type);
-
-}

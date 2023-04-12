@@ -7,32 +7,39 @@ namespace Fx.Receiver
   
     public class Relay : Base, IReceiver
     {
-        private readonly IConfiguration _configuration;
+        
         HybridConnectionListener? _listener;
+        private string _relaynamespace;
+        private string _hybridconnection;
+        private string _saskeyname;
+        private string _key;
         //public IConfiguration? Configuration { get; set; }
         const string MESSAGE = "Connected to Azure Relay HybridConnection";
-        public Relay(IConfiguration configuration)
+        public Relay(string relaynamespace, string hybridconnection, string saskeyname, string key)
         {
-            _configuration=configuration;
+            if (relaynamespace == null) { throw new ArgumentNullException(nameof(relaynamespace)); }
+            if (hybridconnection == null) { throw new ArgumentNullException(nameof(hybridconnection)); }
+            if (saskeyname == null) { throw new ArgumentNullException(nameof(saskeyname)); }
+            if (key == null) { throw new ArgumentNullException(nameof(key)); }
+
+            _relaynamespace= relaynamespace;
+            _hybridconnection= hybridconnection;
+            _saskeyname= saskeyname;
+            _key= key;
+
         }
         
 
-        public async Task Start(/*Action<string> wait, Action<string> returnmessage*/)
+        public async Task Start()
         {
-
-            if (Wait == null) throw new ArgumentNullException(nameof(Wait));
-            if (ReturnMessage == null) throw new ArgumentNullException(nameof(ReturnMessage));
-            if (_configuration == null) throw new ArgumentNullException(nameof(_configuration));
-
-            string? SasKeyName = _configuration["SasKeyName"];
-            string? Key = _configuration["Key"];
-            string? RelayNameSpace = _configuration["RelayNameSpace"];
-            string? HybridConnection = _configuration["HybridConnection"];
             
 
-            var tokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(SasKeyName, Key);
+            if (Wait == null) throw new NullReferenceException(nameof(Wait));
+            if (ReturnMessage == null) throw new NullReferenceException(nameof(ReturnMessage));
             
-            _listener = new HybridConnectionListener(new Uri(string.Format("sb://{0}/{1}", RelayNameSpace, HybridConnection)), tokenProvider);            
+            var tokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(_saskeyname, _key);
+            
+            _listener = new HybridConnectionListener(new Uri(string.Format("sb://{0}/{1}", _relaynamespace, _hybridconnection)), tokenProvider);            
             
 
             _listener.RequestHandler = (context) =>

@@ -41,8 +41,7 @@ namespace Fx.ArmManager
         }
         public async Task<(Uri endpoint, string key)> GetEventGridConnectionInfos(string topicname)
         {
-            const string EVENT_KEY_GRID = "EVENT_GRID_KEYS";
-            const string EVENT_GRID_END_POINT = "EVENT_GRID_END_POINT";
+            
             if (string.IsNullOrEmpty(topicname)) { throw new ArgumentNullException(nameof(topicname)); }
             if (_group == null) { throw new NullReferenceException(nameof(_group)); }
 

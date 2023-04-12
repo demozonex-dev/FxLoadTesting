@@ -5,7 +5,9 @@ using Fx.ArmManager;
 using Fx.Helpers;
 using Fx.Injector;
 
-
+Console.WriteLine("Send Message to Event Grid");
+Console.WriteLine("Enter any key so continue");
+Console.ReadLine();
 
 //Get the config from files
 //var config = Fx.Helpers.Configuration.Create();
@@ -37,6 +39,8 @@ Data data =  new Data
 };
 
 await injector.Send(data);
+
+Console.WriteLine("Message Sent");
 
 class Data
 {

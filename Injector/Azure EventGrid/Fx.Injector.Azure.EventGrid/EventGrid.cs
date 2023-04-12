@@ -1,9 +1,4 @@
-﻿using Azure.Identity;
-using Azure.Messaging.EventGrid;
-using Azure.ResourceManager.EventGrid;
-using Azure.ResourceManager.EventGrid.Models;
-using Azure.ResourceManager.Resources;
-using Microsoft.Extensions.Configuration;
+﻿using Azure.Messaging.EventGrid;
 
 
 namespace Fx.Injector
@@ -24,15 +19,15 @@ namespace Fx.Injector
                                             new Azure.AzureKeyCredential(key));
         }
 
+        
         public async Task Send(object data)
         {
-            
-            await _client.SendEventAsync(new EventGridEvent("New data",
+            if (_client == null) { throw new NullReferenceException(nameof(_client)); }
+        
+            var response= await _client.SendEventAsync(new EventGridEvent("New data",
                                         "NEW_DATA",
                                         "V1.0",
                                         data));
-
-
         }
     }
 }
