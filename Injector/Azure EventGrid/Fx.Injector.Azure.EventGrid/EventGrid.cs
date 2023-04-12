@@ -1,25 +1,29 @@
-﻿using Azure.Messaging.EventGrid;
+﻿using Azure.Identity;
+using Azure.Messaging.EventGrid;
+using Azure.ResourceManager.EventGrid;
+using Azure.ResourceManager.EventGrid.Models;
+using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Configuration;
-using Azure.Core;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Reflection.PortableExecutable;
+
 
 namespace Fx.Injector
 {
     public class EventGrid : IInjector
     {
-        private readonly IConfiguration _configuration;
+       
         
         private readonly EventGridPublisherClient _client;
-        public EventGrid(IConfiguration configuration) {
-            _configuration = configuration;
-            string topicKey = _configuration["Key"];
-            string topicEndpoint = _configuration["TopicEndpoint"];
-            
+       
+        public EventGrid(Uri endpoint, string key)
+        {
+            if (endpoint == null) { throw new ArgumentNullException(nameof(endpoint)); }
+            if (key == null) { throw new ArgumentNullException(nameof(key)); }
+
             _client = new EventGridPublisherClient(
-                                            new Uri(topicEndpoint),
-                                            new Azure.AzureKeyCredential(topicKey));
+                                            endpoint,
+                                            new Azure.AzureKeyCredential(key));
         }
+
         public async Task Send(object data)
         {
             

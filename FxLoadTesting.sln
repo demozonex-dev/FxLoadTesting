@@ -33,19 +33,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Receiver", "Contract\Rec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Injector", "Injector", "{18A2FE72-5B19-42C5-B4AE-2FF899284C50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Injector", "Contract\Injector\Fx.Injector\Fx.Injector.csproj", "{2FB1EC55-4559-440F-AE74-2A4D5B09BCDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Injector", "Contract\Injector\Fx.Injector\Fx.Injector.csproj", "{2FB1EC55-4559-440F-AE74-2A4D5B09BCDD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Injector", "Injector", "{CCA40115-599D-4E30-A132-30C4676D0A36}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Relay", "Azure Relay", "{33F43F1A-D445-4244-962F-08BD370A3132}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Injector.Relay", "Injector\Azure Relay\Fx.Injector.Azure.Relay\Fx.Injector.Relay.csproj", "{69AEDE82-BE36-4725-AF5C-F83BBA5E88CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Injector.Relay", "Injector\Azure Relay\Fx.Injector.Azure.Relay\Fx.Injector.Relay.csproj", "{69AEDE82-BE36-4725-AF5C-F83BBA5E88CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure EventGrid", "Azure EventGrid", "{C7EFBDB2-E643-40F6-BC71-4DDD150F36A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Injector.EventGrid", "Injector\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj", "{E6B1C497-250C-49D8-B144-1733C5004261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Injector.EventGrid", "Injector\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj", "{E6B1C497-250C-49D8-B144-1733C5004261}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Injector.Console", "Injector\Fx.Injector.Console\Fx.Injector.Console.csproj", "{4EF528CB-2151-4B69-9174-10037C8B06EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Injector.Console", "Injector\Fx.Injector.Console\Fx.Injector.Console.csproj", "{4EF528CB-2151-4B69-9174-10037C8B06EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestResourceManager", "Tests\TestResourceManager\TestResourceManager.csproj", "{198370A3-9DBE-4985-A7C5-552032DF2598}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.ArmManager", "Helpers\Fx.ArmManager\Fx.ArmManager.csproj", "{33604928-45A8-46E1-9930-2EA3542FED2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,14 @@ Global
 		{4EF528CB-2151-4B69-9174-10037C8B06EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EF528CB-2151-4B69-9174-10037C8B06EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EF528CB-2151-4B69-9174-10037C8B06EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198370A3-9DBE-4985-A7C5-552032DF2598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198370A3-9DBE-4985-A7C5-552032DF2598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198370A3-9DBE-4985-A7C5-552032DF2598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198370A3-9DBE-4985-A7C5-552032DF2598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33604928-45A8-46E1-9930-2EA3542FED2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33604928-45A8-46E1-9930-2EA3542FED2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33604928-45A8-46E1-9930-2EA3542FED2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33604928-45A8-46E1-9930-2EA3542FED2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +131,8 @@ Global
 		{C7EFBDB2-E643-40F6-BC71-4DDD150F36A2} = {CCA40115-599D-4E30-A132-30C4676D0A36}
 		{E6B1C497-250C-49D8-B144-1733C5004261} = {C7EFBDB2-E643-40F6-BC71-4DDD150F36A2}
 		{4EF528CB-2151-4B69-9174-10037C8B06EA} = {CCA40115-599D-4E30-A132-30C4676D0A36}
+		{198370A3-9DBE-4985-A7C5-552032DF2598} = {926BD25E-7FDB-4F91-A532-241D77790E3D}
+		{33604928-45A8-46E1-9930-2EA3542FED2C} = {BECFCA21-A402-4DDA-B876-8F0B088895EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DD731BA-47B6-437A-A9DD-920ED5F89FF6}

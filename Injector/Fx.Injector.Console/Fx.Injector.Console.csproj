@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
