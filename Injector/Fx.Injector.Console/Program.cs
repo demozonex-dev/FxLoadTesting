@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager.Resources;
 using Fx.ArmManager;
@@ -6,10 +7,11 @@ using Fx.Helpers;
 using Fx.Injector;
 using Microsoft.Extensions.Configuration;
 
-await SendMessageToEventGrid();
+TokenCredential tokenCredential = new VisualStudioCredential();
+await SendMessageToEventGrid(tokenCredential);
 
 
-static async Task SendMessageToEventGrid()
+static async Task SendMessageToEventGrid(TokenCredential credential)
 {
     Console.WriteLine("Send Message to Event Grid");
     Console.WriteLine("Enter any key so continue");
@@ -36,7 +38,7 @@ static async Task SendMessageToEventGrid()
 
     // Get EndPoint and Key from Azure, so no need to stock the secrets
     ResourceClient resourceClient = new ResourceClient();
-    await resourceClient.EasyInitAsync(resourceGroupName,new VisualStudioCredential());
+    await resourceClient.EasyInitAsync(resourceGroupName,credential);
 
     var eventGridConnecyionInfos = await resourceClient.GetEventGridConnectionInfosAsync(topicName);
 

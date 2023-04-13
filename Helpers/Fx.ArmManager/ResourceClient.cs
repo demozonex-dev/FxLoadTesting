@@ -1,11 +1,10 @@
 ﻿using Azure.Core;
-using Azure.Identity;
 using Azure.ResourceManager;
-using Azure.ResourceManager.EventGrid.Models;
 using Azure.ResourceManager.EventGrid;
-using Azure.ResourceManager.Resources;
+using Azure.ResourceManager.EventGrid.Models;
 using Azure.ResourceManager.Relay;
 using Azure.ResourceManager.Relay.Models;
+using Azure.ResourceManager.Resources;
 
 namespace Fx.ArmManager
 {
