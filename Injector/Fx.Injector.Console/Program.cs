@@ -1,14 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager.Resources;
 using Fx.ArmManager;
-using Fx.Helpers;
 using Fx.Injector;
 using Microsoft.Extensions.Configuration;
 
-TokenCredential tokenCredential = new VisualStudioCredential();
-await SendMessageToEventGrid(tokenCredential);
+
+
+
+await SendMessageToEventGrid(await Fx.Helpers.Identity.BrowserInteractiveAuthenticateAsync());
 
 
 static async Task SendMessageToEventGrid(TokenCredential credential)

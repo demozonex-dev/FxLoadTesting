@@ -49,9 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.ArmManager", "Helpers\Fx
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{5E651038-500F-4462-80C9-4582C3D3C91D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.WebApi.Injector", "WebApi\fx.WebApi.Injector\Fx.WebApi.Injector.csproj", "{4AAD76D9-3000-44B0-A843-D71127404697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.WebApi.Injector", "WebApi\fx.WebApi.Injector\Fx.WebApi.Injector.csproj", "{4AAD76D9-3000-44B0-A843-D71127404697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.WebApi.Call.Injector", "WebApi\Fx.WebApi.Call.Injector\Fx.WebApi.Call.Injector.csproj", "{A060DD9F-4468-4AC3-AAC4-780DB2186F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.WebApi.Call.Injector", "WebApi\Fx.WebApi.Call.Injector\Fx.WebApi.Call.Injector.csproj", "{A060DD9F-4468-4AC3-AAC4-780DB2186F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

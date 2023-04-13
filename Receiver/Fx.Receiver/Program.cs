@@ -1,14 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Azure.Core;
 using Azure.Identity;
 using Fx.ArmManager;
 using Fx.Receiver;
 using Microsoft.Extensions.Configuration;
 
 
-await RelayReceiver();
+await RelayReceiver(await Fx.Helpers.Identity.DeviceCodeAuthenticateAsync());
 
-static async Task RelayReceiver()
+static async Task RelayReceiver(TokenCredential credential)
 {
     Action<string> Wait = (message) =>
     {
@@ -44,7 +45,7 @@ static async Task RelayReceiver()
 
     //TODO : Test if Linux or Windows to authenticate with the right Credential
     ResourceClient resourceClient = new ResourceClient();
-    await resourceClient.EasyInitAsync(resourceGroupName, new DeviceCodeCredential());
+    await resourceClient.EasyInitAsync(resourceGroupName, credential);
 
     string key = await resourceClient.GetRelayKeyAsync(relayNameSpace, hybridConnection, sasKeyName);
 
