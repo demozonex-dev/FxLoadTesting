@@ -1,19 +1,22 @@
 ﻿{
   "parameters": {
+    "location" :  {
+      "value": "westeurope"
+    },
     "resourcegroup": {
-      "value": "demofxloadtesting-rg"
+      "value": "demofxloadtesting42-rg"
     },
     "eventgridtopic": {
-      "value": "demofxevgridtopic"
+      "value": "demofxevgridtopic42"
     },
     "eventgridsubscription": {
-      "value": "demofxevgridsubscription"
+      "value": "demofxevgridsubscription42"
     },
     "relaynamespace": {
-      "value": "demofxrelaynamespace"
+      "value": "demofxrelaynamespace42"
     },
     "hybridconnection": {
-      "value": "hcloadtesting"
+      "value": "hcloadtesting42"
     },
     "saskeyname": {
       "value": "RootManageSharedAccessKey"
