@@ -7,7 +7,7 @@ using Fx.Receiver;
 using Microsoft.Extensions.Configuration;
 
 
-await RelayReceiver(await Fx.Helpers.Identity.DeviceCodeAuthenticateAsync());
+await RelayReceiver(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode));
 
 static async Task RelayReceiver(TokenCredential credential)
 {

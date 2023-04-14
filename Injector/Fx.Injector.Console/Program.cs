@@ -6,9 +6,7 @@ using Fx.Injector;
 using Microsoft.Extensions.Configuration;
 
 
-
-
-await SendMessageToEventGrid(await Fx.Helpers.Identity.BrowserInteractiveAuthenticateAsync());
+await SendMessageToEventGrid(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode));
 
 
 static async Task SendMessageToEventGrid(TokenCredential credential)

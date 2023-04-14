@@ -25,11 +25,34 @@ namespace Fx.Helpers
         }
     }
     
+    public enum AuthenticationType
+    {
+        DeviceCode,
+        BrowserInteractive
+    }
     public  class Identity
     {
-        const string AUTH_PATH_FILE = "cat.bin";
+        const string AUTH_PATH_FILE = "c:\\cache\\cat.bin";
         const string TOKEN_CACHE_NAME = "laCatToken";
-        public static async Task<TokenCredential> BrowserInteractiveAuthenticateAsync()
+     
+       
+        public static async Task<TokenCredential> AuthenticateAsync(AuthenticationType type=AuthenticationType.DeviceCode)
+        {
+            TokenCredential credential = null;
+            switch (type)
+            {
+                case AuthenticationType.DeviceCode:
+                    credential = await DeviceCodeAuthenticateAsync();
+                    break;
+                case AuthenticationType.BrowserInteractive:
+                    credential = await BrowserInteractiveAuthenticateAsync();
+                    break;
+                default:
+                    break;
+            }
+            return credential;
+        }
+        internal static async Task<TokenCredential> BrowserInteractiveAuthenticateAsync()
         {
             InteractiveBrowserCredential? credential=null;
             AuthenticationRecord? authRecord=null;
@@ -65,7 +88,7 @@ namespace Fx.Helpers
             return credential;
         }
         
-        public static async Task<TokenCredential> DeviceCodeAuthenticateAsync()
+        internal static async Task<TokenCredential> DeviceCodeAuthenticateAsync()
         {
             DeviceCodeCredential? credential = null;
             AuthenticationRecord? authRecord = null;
