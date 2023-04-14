@@ -18,6 +18,8 @@ namespace Fx.ArmManager
         //private ArmClient? _client;
         private SubscriptionResource? _sub;
         private ResourceGroupResource? _group;
+        private RelayNamespaceResource? _relay;
+        private RelayHybridConnectionResource? _hybridConnection;
 
         public void Login(TokenCredential tokencredential)
         {
@@ -75,7 +77,8 @@ namespace Fx.ArmManager
             return keys.PrimaryKey;
         }
 
-        public async Task EasyInitAsync(string resourcegroupname, TokenCredential tokenCredential)
+        public async Task EasyInitAsync(string resourcegroupname, 
+                                        TokenCredential tokenCredential)
         {
             if (resourcegroupname == null) { throw new ArgumentNullException(nameof(resourcegroupname)); }
 
@@ -87,5 +90,81 @@ namespace Fx.ArmManager
 
         }
 
+        public async Task<ResourceGroupResource> CreateOrUpdateResourceGroupAsync(string resourcegroupname,
+                                                                                        string location)
+        {
+            if (resourcegroupname == null) { throw new ArgumentNullException(nameof(resourcegroupname)); }
+
+            if (location == null) { throw new ArgumentNullException(nameof(location)); }
+            if (_sub == null) { throw new NullReferenceException(nameof(_sub)); }
+            var armOperation= await _sub.GetResourceGroups()
+                                        .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                                             resourcegroupname,
+                                                             new ResourceGroupData(location));
+            return _group=armOperation.Value;
+            
+        }
+
+        public async Task<EventGridTopicResource> CreateOrUpdateEventGridTopicAsync(
+                                                            string eventgridname, 
+                                                            string eventsubscriptionname,
+                                                            string location)
+        {
+            if (eventgridname == null) { { throw new ArgumentNullException(nameof(eventgridname)); } }
+            if (eventgridname == null) { throw new ArgumentNullException(nameof(eventgridname)); }
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+            
+            if (_hybridConnection== null) { throw new NullReferenceException(nameof(_hybridConnection)); }
+
+            AzureLocation azurelocation = new AzureLocation(location);
+
+            var armOperation = await _group.GetEventGridTopics()
+                         .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                              eventgridname,
+                                              new EventGridTopicData(azurelocation));
+            EventGridSubscriptionData subscriptionData = new EventGridSubscriptionData();
+            
+
+            await armOperation.Value.GetTopicEventSubscriptions()
+                                        .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                        eventsubscriptionname,
+                                        new EventGridSubscriptionData { 
+                                        Destination=new HybridConnectionEventSubscriptionDestination
+                                            {
+                                               ResourceId=_hybridConnection.Id,
+                                            }
+                                        });
+                                                             
+
+                                        
+
+            return armOperation.Value;
+            
+        }
+
+        public async Task<RelayNamespaceResource> CreateOrUpdateRelayNamespaceAsync(string relaynamespace,
+                                                                                    string hybridconnection,
+                                                                                    string location)
+                                                                                    
+        {
+            if (relaynamespace == null) { throw new ArgumentNullException(nameof(relaynamespace)); }
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+
+            AzureLocation azurelocation = new AzureLocation(location);
+            var armOperation = await _group.GetRelayNamespaces()
+                         .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                              relaynamespace,
+                                              new RelayNamespaceData(azurelocation));
+            var op=await armOperation.Value.GetRelayHybridConnections()
+                                    .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                                         hybridconnection, 
+                                                         new RelayHybridConnectionData
+                                                         {
+                                                             IsClientAuthorizationRequired = true,
+                                                         });
+            _hybridConnection = op.Value;
+            return armOperation.Value;
+        }
+                                                                  
     }  
 }

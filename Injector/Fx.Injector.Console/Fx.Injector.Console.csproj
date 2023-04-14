@@ -9,18 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\Helpers\Fx.CreateInfra.Console\parameters.json" Link="parameters.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
     <ProjectReference Include="..\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

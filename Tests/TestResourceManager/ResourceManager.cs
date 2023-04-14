@@ -37,8 +37,8 @@ namespace TestResourceManager
         {
             ResourceClient resourceClient = new ResourceClient();
             resourceClient.Login(new VisualStudioCredential());
-            resourceClient.SetDefaultSubscriptionAsync();
-            resourceClient.SetDefaultResourceGroupAsync("cna100-rg");
+            await resourceClient.SetDefaultSubscriptionAsync();
+            await resourceClient.SetDefaultResourceGroupAsync("cna100-rg");
 
             
             string? resourceGroupName = "cna100-rg";
@@ -51,7 +51,34 @@ namespace TestResourceManager
             string key = await resourceClient.GetRelayKeyAsync(relayNameSpace, hybridConnection, sasKeyName); 
             Console.WriteLine($"{key}");
             Assert.Pass();
+        }
+        [Test]
+        public async Task Test_Create_Relay_And_EventGrid()
+        {
+            ResourceClient resourceClient = new ResourceClient();
+            resourceClient.Login(new VisualStudioCredential());
+            await resourceClient.SetDefaultSubscriptionAsync();
+            string? resourceGroupName = "demofxloadtesting-rg";            
+            string? location = "francecentral";
+            await resourceClient
+                        .CreateOrUpdateResourceGroupAsync(resourceGroupName,location);
 
+            string? topicName = "demofxevgridtopic";
+            string? subscriptionName = "evRelaySub";
+            string? hybridConnection = "hcloadtesting";
+
+            await resourceClient
+                        .CreateOrUpdateRelayNamespaceAsync("demofxrelaynamespace", 
+                                                           hybridConnection, 
+                                                           location);
+
+            await resourceClient
+                        .CreateOrUpdateEventGridTopicAsync(topicName,
+                                                           subscriptionName,
+                                                           location);
+            
+            
+            Assert.Pass();
         }
     }
 }

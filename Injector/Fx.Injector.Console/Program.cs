@@ -24,13 +24,12 @@ static async Task SendMessageToEventGrid(TokenCredential credential)
     
     //Get the resources's names
     var config = Fx.Helpers.Configuration.Create();
-    string? resourceGroupName = config["resourcegroup"];
+    var parameterSection= config.GetSection("parameters");
+    string? resourceGroupName = parameterSection["resourcegroup:value"];
     if (resourceGroupName == null) { throw new NullReferenceException(nameof(resourceGroupName)); }
 
-    IConfigurationSection section = config.GetSection("eventgrid");
-    if (section == null) { throw new NullReferenceException(nameof(section)); }
-
-    string? topicName = section["topicname"];
+    
+    string? topicName = parameterSection["eventgridtopic:value"];
     if (topicName == null) { throw new NullReferenceException(nameof(topicName)); }
 
 

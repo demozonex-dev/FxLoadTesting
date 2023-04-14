@@ -28,19 +28,18 @@ static async Task RelayReceiver(TokenCredential credential)
 
 
     var config = Fx.Helpers.Configuration.Create();
-    string? resourceGroupName = config["resourcegroup"];
+    var parametersSection = config.GetSection("parameters");
+    string? resourceGroupName = parametersSection["resourcegroup:value"];
     if (resourceGroupName == null) { throw new NullReferenceException(nameof(resourceGroupName)); }
 
-    IConfigurationSection? section = config.GetSection("relay");
-    if (section == null) { throw new NullReferenceException(nameof(section)); }
-
-    string? hybridConnection = section["hybridconnection"];
+    
+    string? hybridConnection = parametersSection["hybridconnection:value"];
     if (hybridConnection == null) { throw new NullReferenceException(nameof(hybridConnection)); }
 
-    string? relayNameSpace = section["relaynamespace"];
+    string? relayNameSpace = parametersSection["relaynamespace:value"];
     if (relayNameSpace == null) { throw new NullReferenceException(nameof(relayNameSpace)); }
 
-    string? sasKeyName = section["saskeyname"];
+    string? sasKeyName = parametersSection["saskeyname:value"];
     if (sasKeyName == null) { throw new NullReferenceException(nameof(sasKeyName)); }
 
     //TODO : Test if Linux or Windows to authenticate with the right Credential

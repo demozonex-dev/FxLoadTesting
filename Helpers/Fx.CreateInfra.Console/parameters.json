@@ -1,0 +1,22 @@
+﻿{
+  "parameters": {
+    "resourcegroup": {
+      "value": "demofxloadtesting-rg"
+    },
+    "eventgridtopic": {
+      "value": "demofxevgridtopic"
+    },
+    "eventgridsubscription": {
+      "value": "demofxevgridsubscription"
+    },
+    "relaynamespace": {
+      "value": "demofxrelaynamespace"
+    },
+    "hybridconnection": {
+      "value": "hcloadtesting"
+    },
+    "saskeyname": {
+      "value": "RootManageSharedAccessKey"
+    }
+  }
+}
