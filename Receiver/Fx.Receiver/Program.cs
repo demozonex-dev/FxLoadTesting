@@ -1,13 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Azure.Core;
-using Azure.Identity;
 using Fx.ArmManager;
 using Fx.Receiver;
-using Microsoft.Extensions.Configuration;
 
 
-await RelayReceiver(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode));
+TokenCredential credential = await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
+await RelayReceiver(credential);
 
 static async Task RelayReceiver(TokenCredential credential)
 {

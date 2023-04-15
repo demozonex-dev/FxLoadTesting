@@ -2,7 +2,9 @@
 using Azure.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,11 +16,16 @@ namespace Fx.Helpers
         public static async Task PersisteAsync(this AuthenticationRecord record, string path)
         {
             // Serialize the AuthenticationRecord to disk so that it can be re-used across executions of this initialization code.
-            using var authRecordStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-            await record.SerializeAsync(authRecordStream);
+            // TODO : See how to persit file in linux
+            
+                using var authRecordStream = new FileStream(path, FileMode.Create, FileAccess.Write);
+                await record.SerializeAsync(authRecordStream);
+            
+            
         }
         public static async Task<AuthenticationRecord> LoadAsync(string path)
         {
+            
             // Load the previously serialized AuthenticationRecord from disk and deserialize it.
             using var authRecordStream = new FileStream(path, FileMode.Open, FileAccess.Read);
             return  await AuthenticationRecord.DeserializeAsync(authRecordStream);
@@ -32,16 +39,39 @@ namespace Fx.Helpers
     }
     public  class Identity
     {
-        const string AUTH_PATH_FILE = "c:\\cache\\cat.bin";
+        const string AUTH_FILE = "FxLoadTestInCat.bin";
         const string TOKEN_CACHE_NAME = "laCatToken";
      
-       
+        static string? _pathFile;
+        public static string CombinePathFile()
+        {
+            // Build the auth path file
+            // Cross platform  c:\users (Windows) /home/[User] Linux
+            //string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string userPath=null;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                userPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            }
+            else
+            {
+                userPath=Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            }
+            if (userPath == null) { throw new NullReferenceException(nameof(userPath));}
+
+            return Path.Combine(userPath, AUTH_FILE);
+        }
         public static async Task<TokenCredential> AuthenticateAsync(AuthenticationType type=AuthenticationType.DeviceCode)
         {
+            
+            _pathFile = CombinePathFile();
+            
+            
             TokenCredential credential = null;
             switch (type)
             {
                 case AuthenticationType.DeviceCode:
+                    
                     credential = await DeviceCodeAuthenticateAsync();
                     break;
                 case AuthenticationType.BrowserInteractive:
@@ -52,12 +82,13 @@ namespace Fx.Helpers
             }
             return credential;
         }
+        
         internal static async Task<TokenCredential> BrowserInteractiveAuthenticateAsync()
         {
             InteractiveBrowserCredential? credential=null;
             AuthenticationRecord? authRecord=null;
-
-            if (!File.Exists(AUTH_PATH_FILE))
+            
+            if (!File.Exists(_pathFile))
             {
 
                 InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions
@@ -69,12 +100,12 @@ namespace Fx.Helpers
                 };
                 credential = new InteractiveBrowserCredential(options);
                 authRecord = await credential.AuthenticateAsync();
-                await authRecord.PersisteAsync(AUTH_PATH_FILE);
+                await authRecord.PersisteAsync(_pathFile);
                  
             }
             else
             {
-               authRecord= await AuthenticationRecordExtension.LoadAsync(AUTH_PATH_FILE);
+               authRecord= await AuthenticationRecordExtension.LoadAsync(_pathFile);
                 // Construct a new client with our TokenCachePersistenceOptions with the addition of the AuthenticationRecord property.
                 // This tells the credential to use the same token cache in addition to which account to try and fetch from cache when GetToken is called.
                 credential = new InteractiveBrowserCredential(
@@ -92,33 +123,74 @@ namespace Fx.Helpers
         {
             DeviceCodeCredential? credential = null;
             AuthenticationRecord? authRecord = null;
-
-            if (!File.Exists(AUTH_PATH_FILE))
+            DeviceCodeCredentialOptions? options = null;
+            if (!File.Exists(_pathFile))
             {
 
-                DeviceCodeCredentialOptions options = new DeviceCodeCredentialOptions
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                    options = new DeviceCodeCredentialOptions
                     {
-                        Name = TOKEN_CACHE_NAME
-                    }
-                };
+                        TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                        {
+                            Name = TOKEN_CACHE_NAME
+                        }
+                    };
+                    
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Console.WriteLine("Linux");
+                    options = new DeviceCodeCredentialOptions
+                    {
+                        TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                        {
+                            Name = "linux"
+                        }
+                    };
+                 
+                }
+                
                 credential = new DeviceCodeCredential(options);
+                if (credential == null) { throw new ArgumentNullException(nameof(credential)); }
+                
                 authRecord = await credential.AuthenticateAsync();
-                await authRecord.PersisteAsync(AUTH_PATH_FILE);
+                Console.WriteLine("Authentification");
+                if (authRecord == null) { throw new NullReferenceException(nameof(authRecord)); }
+                if (_pathFile == null) { throw new NullReferenceException(nameof(_pathFile)); }
+                Console.WriteLine("Persist");
+                await authRecord.PersisteAsync(_pathFile);
+                
+                
 
             }
             else
             {
-                authRecord = await AuthenticationRecordExtension.LoadAsync(AUTH_PATH_FILE);
+                Console.WriteLine("Load");
+                authRecord = await AuthenticationRecordExtension.LoadAsync(_pathFile);
                 // Construct a new client with our TokenCachePersistenceOptions with the addition of the AuthenticationRecord property.
                 // This tells the credential to use the same token cache in addition to which account to try and fetch from cache when GetToken is called.
-                credential = new DeviceCodeCredential(
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    credential = new DeviceCodeCredential(
                     new DeviceCodeCredentialOptions
                     {
                         TokenCachePersistenceOptions = new TokenCachePersistenceOptions { Name = TOKEN_CACHE_NAME },
                         AuthenticationRecord = authRecord
                     });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Console.WriteLine("linux");
+                    credential = new DeviceCodeCredential(
+                    new DeviceCodeCredentialOptions
+                    {
+                        TokenCachePersistenceOptions = new TokenCachePersistenceOptions { Name = "linux" },
+                        AuthenticationRecord = authRecord
+                    });
+                }
+                    
+                
             }
 
             return credential;

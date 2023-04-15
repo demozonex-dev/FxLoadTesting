@@ -5,8 +5,8 @@ using Fx.ArmManager;
 using Fx.Injector;
 using Microsoft.Extensions.Configuration;
 
-
-await SendMessageToEventGrid(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode));
+TokenCredential tokenCredential = await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
+await SendMessageToEventGrid(tokenCredential);
 
 
 static async Task SendMessageToEventGrid(TokenCredential credential)
