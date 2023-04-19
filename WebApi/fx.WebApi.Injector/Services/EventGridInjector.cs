@@ -27,7 +27,7 @@ namespace Fx.WebApi.Injector.Services
             if (resourceGroup == null) { throw new NullReferenceException($"{nameof(resourceGroup)}"); }
 
             TokenCredential? tokenCredential = null;
-#if (_DEBUG)
+#if (DEBUG)
 
             tokenCredential = new VisualStudioCredential();
 
