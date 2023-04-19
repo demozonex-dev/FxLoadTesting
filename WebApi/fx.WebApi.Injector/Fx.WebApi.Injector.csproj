@@ -9,9 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Messages\Message.cs" Link="Controllers\Message.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.8.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
+    <ProjectReference Include="..\..\Injector\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj" />
+    <ProjectReference Include="..\..\Injector\Azure ServiceBus\Fx.Injector.Azure.ServiceBus\Fx.Injector.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

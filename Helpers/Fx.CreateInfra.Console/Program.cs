@@ -47,7 +47,7 @@ static async Task CreateAppServicePlan(ResourceClient resourceClient, IConfigura
         Tier= sectionSku["tier"],
         Size= sectionSku["size"],
         Family = sectionSku["family"],
-        Capacity = int.Parse(sectionSku["capacity"])
+        Capacity = int.Parse(sectionSku["capacity"])        
     };
     Console.WriteLine("Creating App Service Plan");
     

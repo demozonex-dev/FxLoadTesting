@@ -1,9 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Azure.Core;
-using Azure.ResourceManager.ServiceBus.Models;
 using Fx.ArmManager;
-using Fx.Models;
 using Fx.Receiver;
 using Microsoft.Extensions.Configuration;
 

@@ -3,7 +3,6 @@ using Azure.Core;
 using Azure.Messaging.EventGrid.SystemEvents;
 using Fx.ArmManager;
 using Fx.Injector;
-using Fx.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System.Runtime.CompilerServices;
@@ -51,7 +50,7 @@ string host=Fx.Helpers.NetworkInfo.GetHostName();
 
     for (int i = 1; i <= maxMessage; i++)
     {
-        DemoMessage data = new DemoMessage
+        Messages.DemoMessage data = new Messages.DemoMessage
         {
             Id = Guid.NewGuid().ToString(),
             Description = "message send",
@@ -89,7 +88,7 @@ static async Task<IInjector> CreateServiceBusInjector(ResourceClient resourcecli
 static async Task<IInjector> CreateEventGridInjector(ResourceClient resourceclient, IConfigurationSection parametersection)
 {
 
-    Console.WriteLine("demo sending Messages to Event Grid");
+    Console.WriteLine("Demo sending Messages to Event Grid");
     Console.WriteLine("Enter any key to send the messages");
     Console.ReadLine();
 

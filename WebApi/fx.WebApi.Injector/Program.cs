@@ -1,3 +1,5 @@
+using Fx.WebApi.Injector.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
+builder.Services.AddSingleton<EventGridInjectorService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -20,10 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Contract\Receiver\Fx.Receiver.csproj" />
     <ProjectReference Include="..\..\Helpers\Fx.ArmManager\Fx.ArmManager.csproj" />
     <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
-    <ProjectReference Include="..\..\Models\Fx.Models\Fx.Models.csproj" />
     <ProjectReference Include="..\Azure Relay\Fx.Azure.Relay\Fx.Receiver.Relay.csproj" />
     <ProjectReference Include="..\Azure ServiceBus\Fx.Receiver.ServiceBus\Fx.Receiver.ServiceBus.csproj" />
     <ProjectReference Include="..\Azure WebSocket\Fx.Azure.WebSocket\Fx.Receiver.WebSocket.csproj" />
