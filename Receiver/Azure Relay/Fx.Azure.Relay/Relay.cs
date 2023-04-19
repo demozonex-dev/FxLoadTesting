@@ -1,11 +1,9 @@
 ﻿using Microsoft.Azure.Relay;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
 
 namespace Fx.Receiver
 {
-  
-    public class Relay : Base, IReceiver
+
+    public class Relay : ReceiverBase, IReceiver
     {
         
         HybridConnectionListener? _listener;
@@ -13,7 +11,7 @@ namespace Fx.Receiver
         private string _hybridconnection;
         private string _saskeyname;
         private string _key;
-        //public IConfiguration? Configuration { get; set; }
+        public string ReceiverType { get; }
         const string MESSAGE = "Connected to Azure Relay HybridConnection, waiting for message";
         public Relay(string relaynamespace, string hybridconnection, string saskeyname, string key)
         {
@@ -21,6 +19,8 @@ namespace Fx.Receiver
             if (hybridconnection == null) { throw new ArgumentNullException(nameof(hybridconnection)); }
             if (saskeyname == null) { throw new ArgumentNullException(nameof(saskeyname)); }
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
+
+            ReceiverType = "Relay";
 
             _relaynamespace= relaynamespace;
             _hybridconnection= hybridconnection;

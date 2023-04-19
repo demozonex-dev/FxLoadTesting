@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Fx.Injector.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "servicebus"
+    }
+  }
+}

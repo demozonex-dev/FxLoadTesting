@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Contract\Receiver\Fx.IReceiver.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -2,7 +2,7 @@
 
 namespace Fx.Receiver
 {
-    public class Base
+    public class ReceiverBase
     {
               
         public Action<string> Wait { get; set; }

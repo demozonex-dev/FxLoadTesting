@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Contract\Injector\Fx.Injector\Fx.Injector.csproj" />
+    <ProjectReference Include="..\..\..\Contract\Injector\Fx.Injector\Fx.IInjector.csproj" />
     <ProjectReference Include="..\..\..\Helpers\Fx.ArmManager\Fx.ArmManager.csproj" />
   </ItemGroup>
 

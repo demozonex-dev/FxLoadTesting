@@ -4,22 +4,43 @@
       "value": "westeurope"
     },
     "resourcegroup": {
-      "value": "demofxloadtesting42-rg"
+      "value": "demofxloadtesting99-rg"
     },
     "eventgridtopic": {
-      "value": "demofxevgridtopic42"
+      "value": "demofxevgridtopic99"
     },
     "eventgridsubscription": {
-      "value": "demofxevgridsubscription42"
+      "value": "demofxevgridsubscription99"
     },
     "relaynamespace": {
-      "value": "demofxrelaynamespace42"
+      "value": "demofxrelaynamespace99"
     },
     "hybridconnection": {
-      "value": "hcloadtesting42"
+      "value": "hcloadtesting99"
     },
     "saskeyname": {
       "value": "RootManageSharedAccessKey"
+    },
+    "servicebus": {
+      "value": "demofxservicebus99"
+    },
+    "servicebusqueue": {
+      "value": "queueloadtesting99"
+    },
+    "servicebustopic": {
+      "value": "topicloadtesting99"
+    },
+    "appserviceplan": {
+      "value": "demofxappserviceplan99",
+      "kind": "linux",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "S1",
+        "family": "S",
+        "capacity": 10
+      }
+
     }
   }
 }

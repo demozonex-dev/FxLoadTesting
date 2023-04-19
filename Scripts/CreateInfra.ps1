@@ -1,0 +1,1 @@
+dotnet "I:\repos-1\FxLoadTesting\Helpers\Fx.CreateInfra.Console\bin\Debug\net7.0\Fx.CreateInfra.Console.dll"

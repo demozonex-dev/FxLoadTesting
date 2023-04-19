@@ -48,7 +48,7 @@ namespace Fx.Helpers
             // Build the auth path file
             // Cross platform  c:\users (Windows) /home/[User] Linux
             //string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string userPath=null;
+            string? userPath=null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 userPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -67,7 +67,7 @@ namespace Fx.Helpers
             _pathFile = CombinePathFile();
             
             
-            TokenCredential credential = null;
+            TokenCredential? credential = null;
             switch (type)
             {
                 case AuthenticationType.DeviceCode:
@@ -80,6 +80,7 @@ namespace Fx.Helpers
                 default:
                     break;
             }
+            if (credential == null) { throw new NullReferenceException(nameof(credential)); }
             return credential;
         }
         
@@ -140,7 +141,7 @@ namespace Fx.Helpers
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    Console.WriteLine("Linux");
+                    
                     options = new DeviceCodeCredentialOptions
                     {
                         TokenCachePersistenceOptions = new TokenCachePersistenceOptions
@@ -155,18 +156,17 @@ namespace Fx.Helpers
                 if (credential == null) { throw new ArgumentNullException(nameof(credential)); }
                 
                 authRecord = await credential.AuthenticateAsync();
-                Console.WriteLine("Authentification");
+                
                 if (authRecord == null) { throw new NullReferenceException(nameof(authRecord)); }
                 if (_pathFile == null) { throw new NullReferenceException(nameof(_pathFile)); }
-                Console.WriteLine("Persist");
+                
                 await authRecord.PersisteAsync(_pathFile);
                 
                 
 
             }
             else
-            {
-                Console.WriteLine("Load");
+            {                
                 authRecord = await AuthenticationRecordExtension.LoadAsync(_pathFile);
                 // Construct a new client with our TokenCachePersistenceOptions with the addition of the AuthenticationRecord property.
                 // This tells the credential to use the same token cache in addition to which account to try and fetch from cache when GetToken is called.
@@ -181,6 +181,7 @@ namespace Fx.Helpers
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
+                    //TODO : See why the token cache does't work with linux
                     Console.WriteLine("linux");
                     credential = new DeviceCodeCredential(
                     new DeviceCodeCredentialOptions

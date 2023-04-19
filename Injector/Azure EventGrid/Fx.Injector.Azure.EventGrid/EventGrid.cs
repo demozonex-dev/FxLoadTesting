@@ -8,7 +8,8 @@ namespace Fx.Injector
        
         
         private readonly EventGridPublisherClient _client;
-       
+        public  string InjectorType { get; }
+
         public EventGrid(Uri endpoint, string key)
         {
             if (endpoint == null) { throw new ArgumentNullException(nameof(endpoint)); }
@@ -17,9 +18,11 @@ namespace Fx.Injector
             _client = new EventGridPublisherClient(
                                             endpoint,
                                             new Azure.AzureKeyCredential(key));
+            InjectorType = "EventGrid";
         }
 
         
+
         public async Task SendAsync(object data)
         {
             if (_client == null) { throw new NullReferenceException(nameof(_client)); }

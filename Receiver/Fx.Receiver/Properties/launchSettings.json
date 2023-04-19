@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Fx.Receiver.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "relay"
+    }
+  }
+}

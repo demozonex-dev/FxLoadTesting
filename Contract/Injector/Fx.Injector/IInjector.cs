@@ -6,6 +6,7 @@ namespace Fx.Injector
     {
         
         public Task SendAsync(object message);
-        
+        public string  InjectorType { get; }
+
     }
 }

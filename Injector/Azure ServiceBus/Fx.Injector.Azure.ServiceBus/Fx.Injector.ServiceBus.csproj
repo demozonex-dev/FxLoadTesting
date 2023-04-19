@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Relay" Version="2.0.15596" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.13.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Contract\Receiver\Fx.IReceiver.csproj" />
+    <ProjectReference Include="..\..\..\Contract\Injector\Fx.Injector\Fx.IInjector.csproj" />
   </ItemGroup>
 
 </Project>

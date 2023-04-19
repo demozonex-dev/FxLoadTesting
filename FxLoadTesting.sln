@@ -29,11 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Receiver.WebSocket", "Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Receiver", "Receiver", "{13725CB6-E124-456C-9D91-6BAE5D699BEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Receiver", "Contract\Receiver\Fx.Receiver.csproj", "{A7A2BD84-9C0C-4224-BD30-DED07EC72EEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.IReceiver", "Contract\Receiver\Fx.IReceiver.csproj", "{A7A2BD84-9C0C-4224-BD30-DED07EC72EEA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Injector", "Injector", "{18A2FE72-5B19-42C5-B4AE-2FF899284C50}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.Injector", "Contract\Injector\Fx.Injector\Fx.Injector.csproj", "{2FB1EC55-4559-440F-AE74-2A4D5B09BCDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.IInjector", "Contract\Injector\Fx.Injector\Fx.IInjector.csproj", "{2FB1EC55-4559-440F-AE74-2A4D5B09BCDD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Injector", "Injector", "{CCA40115-599D-4E30-A132-30C4676D0A36}"
 EndProject
@@ -53,7 +53,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.WebApi.Injector", "WebAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.WebApi.Call.Injector", "WebApi\Fx.WebApi.Call.Injector\Fx.WebApi.Call.Injector.csproj", "{A060DD9F-4468-4AC3-AAC4-780DB2186F83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.CreateInfra.Console", "Helpers\Fx.CreateInfra.Console\Fx.CreateInfra.Console.csproj", "{71B3230A-57B3-457F-B1A8-42078EFBEDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fx.CreateInfra.Console", "Helpers\Fx.CreateInfra.Console\Fx.CreateInfra.Console.csproj", "{71B3230A-57B3-457F-B1A8-42078EFBEDC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Receiver.ServiceBus", "Receiver\Azure ServiceBus\Fx.Receiver.ServiceBus\Fx.Receiver.ServiceBus.csproj", "{ED47CA72-975A-4B6C-A84C-8602FE4B06B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure ServiceBus", "Azure ServiceBus", "{F782C19F-315D-46CD-8BD7-B5C4137BE91C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure ServiceBus", "Azure ServiceBus", "{D30391AC-B88C-443A-AD5B-4B86AFB04A34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Injector.ServiceBus", "Injector\Azure ServiceBus\Fx.Injector.Azure.ServiceBus\Fx.Injector.ServiceBus.csproj", "{5A58F4C7-CF97-4128-B681-09D24370E25C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{A13E22A4-38E0-4C85-9E12-6432ACD65DE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fx.Models", "Models\Fx.Models\Fx.Models.csproj", "{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +133,18 @@ Global
 		{71B3230A-57B3-457F-B1A8-42078EFBEDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71B3230A-57B3-457F-B1A8-42078EFBEDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71B3230A-57B3-457F-B1A8-42078EFBEDC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED47CA72-975A-4B6C-A84C-8602FE4B06B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED47CA72-975A-4B6C-A84C-8602FE4B06B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED47CA72-975A-4B6C-A84C-8602FE4B06B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED47CA72-975A-4B6C-A84C-8602FE4B06B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A58F4C7-CF97-4128-B681-09D24370E25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A58F4C7-CF97-4128-B681-09D24370E25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A58F4C7-CF97-4128-B681-09D24370E25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A58F4C7-CF97-4128-B681-09D24370E25C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +170,11 @@ Global
 		{4AAD76D9-3000-44B0-A843-D71127404697} = {5E651038-500F-4462-80C9-4582C3D3C91D}
 		{A060DD9F-4468-4AC3-AAC4-780DB2186F83} = {5E651038-500F-4462-80C9-4582C3D3C91D}
 		{71B3230A-57B3-457F-B1A8-42078EFBEDC5} = {BECFCA21-A402-4DDA-B876-8F0B088895EC}
+		{ED47CA72-975A-4B6C-A84C-8602FE4B06B6} = {F782C19F-315D-46CD-8BD7-B5C4137BE91C}
+		{F782C19F-315D-46CD-8BD7-B5C4137BE91C} = {D0EA8292-AE06-4BDE-9B48-97952EAC0251}
+		{D30391AC-B88C-443A-AD5B-4B86AFB04A34} = {CCA40115-599D-4E30-A132-30C4676D0A36}
+		{5A58F4C7-CF97-4128-B681-09D24370E25C} = {D30391AC-B88C-443A-AD5B-4B86AFB04A34}
+		{DC64D2F1-FF6C-4F8A-AC11-F4B6C8849A2D} = {A13E22A4-38E0-4C85-9E12-6432ACD65DE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8DD731BA-47B6-437A-A9DD-920ED5F89FF6}
