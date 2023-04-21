@@ -1,3 +1,5 @@
+using Fx.WebApi.Call.Injector.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 builder.Services.AddSingleton<HttpClient>();
+
+builder.Services.AddSingleton<IHttpInjector, HttpInjector>();
+builder.Services.AddHttpClient<HttpInjector>("Injector", httpClient =>
+{
+    httpClient.BaseAddress = new Uri(builder.Configuration["InjectorUrl"]);
+    httpClient.DefaultRequestHeaders.Add("Accept", "Application/json");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
