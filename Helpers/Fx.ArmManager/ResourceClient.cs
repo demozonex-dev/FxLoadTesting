@@ -12,6 +12,7 @@ using Azure.ResourceManager.AppService.Models;
 using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Azure.ResourceManager.WebPubSub;
+using Azure.ResourceManager.WebPubSub.Models;
 
 namespace Fx.ArmManager
 {
@@ -230,7 +231,35 @@ namespace Fx.ArmManager
 
             return armOperation.Value;
         }
-        
+
+        public async Task CreateOrUpdateWebPubSubAsync(string webpubsubname, 
+                                                       string hubname,
+                                                       string location)
+        {
+            if (location == null) { throw new ArgumentNullException(nameof(location)); }
+            if (webpubsubname == null) { throw new ArgumentNullException(nameof(webpubsubname)); }
+            if (hubname == null) { throw new ArgumentNullException(nameof(hubname)); }
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+            
+
+            WebPubSubData webPubSubData = new WebPubSubData(new AzureLocation(location));
+            webPubSubData.Location = new AzureLocation(location);
+            webPubSubData.Sku = new BillingInfoSku("Premium_P1");
+            
+            var armOperation = await _group.GetWebPubSubs()
+                                     .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                                          webpubsubname,
+                                                          webPubSubData
+                                                          );
+            var opHub = await armOperation.Value.GetWebPubSubHubs()
+                                               .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                                                   hubname,
+                                                                   new WebPubSubHubData(new Azure.ResourceManager.WebPubSub.Models.WebPubSubHubProperties
+                                                                   {
+                                                                       AnonymousConnectPolicy = "deny"
+                                                                   }));
+
+        }
         public async Task CreateOrUpdateServiceBusAsync(string servicebusname,                                                        
                                                         string queue,
                                                         string topic,

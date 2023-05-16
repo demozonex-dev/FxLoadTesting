@@ -19,10 +19,13 @@ if (location == null) { throw new NullReferenceException(nameof(location)); }
 await resourceClient.SetDefaultResourceGroupAsync(resourceGroupName);
 
 //Execute in order because EventGrid depend on Relay and Service bus for the subscription
-await CreateRelayAsync(resourceClient, parametersSection, location);
-await CreateServiceBusAsync(resourceClient, parametersSection, location);
-await CreateEventGridAsync(resourceClient, parametersSection, location);
+//await CreateRelayAsync(resourceClient, parametersSection, location);
+//await CreateServiceBusAsync(resourceClient, parametersSection, location);
+//await CreateEventGridAsync(resourceClient, parametersSection, location);
 //await CreateAppServicePlan(resourceClient, parametersSection, location);
+
+await CreateWebPubSubAsync(resourceClient, parametersSection, location);
+
 Console.WriteLine("Success !!!!");
 
 static async Task CreateAppServicePlan(ResourceClient resourceClient, IConfiguration  parametersection, string location)
@@ -119,4 +122,17 @@ static async Task CreateServiceBusAsync(ResourceClient resourceClient,
     if (location == null) { throw new NullReferenceException(nameof(location)); }
     Console.WriteLine("Creating ServiceBus");
     await resourceClient.CreateOrUpdateServiceBusAsync(serviceBus, serviceBusQueue, serviceBusTopic, location);
+}
+
+static async Task CreateWebPubSubAsync(ResourceClient resourceclient,
+                                  IConfigurationSection parametersection,
+                                  string? location)
+{
+    string? webPubSub = parametersection["webpubsub:value"];
+    if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
+    string? hubname = parametersection["webpubsubhubname:value"];
+    if (hubname == null) { throw new NullReferenceException(nameof(hubname)); }
+    if (location == null) { throw new NullReferenceException(nameof(location)); }
+    Console.WriteLine("Creating WebPubSub");
+    await resourceclient.CreateOrUpdateWebPubSubAsync(webPubSub,hubname,location);
 }
