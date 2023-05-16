@@ -11,6 +11,7 @@ using Azure.ResourceManager.ServiceBus.Models;
 using Azure.ResourceManager.AppService.Models;
 using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Azure.ResourceManager.WebPubSub;
 
 namespace Fx.ArmManager
 {
@@ -71,20 +72,34 @@ namespace Fx.ArmManager
             return new(endPointUri, key);          
           
         }
-
-        public async Task<string> GetServiceBusConnectionStringAsync(string servicebusnamspace,string saskeyname)
+        public async Task<string> GetWebPubSubConnectionStringAsync(string wepubsubname)
         {
-            string key = await GetServiceBusKeyAsync(servicebusnamspace, saskeyname);
-            return  $"Endpoint=sb://{servicebusnamspace}.servicebus.windows.net/;SharedAccessKeyName={saskeyname};SharedAccessKey={key}";
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+            if (wepubsubname == null) { throw new ArgumentNullException(nameof(wepubsubname)); }
+            var webPubSubHub=await _group.GetWebPubSubAsync(wepubsubname);
+            
+            if (webPubSubHub == null) { throw new NullReferenceException(nameof(webPubSubHub)); }
+            var key=await webPubSubHub.Value.GetKeysAsync();
+            if (key == null) { throw new ArgumentNullException(nameof(key)); }
+            return key.Value.PrimaryConnectionString;
+            
         }
-        private  async Task<string> GetServiceBusKeyAsync(string servicebusnamespace, string saskeyname )
+        public async Task<string> GetServiceBusConnectionStringAsync(string servicebusnamespace,
+                                                                     string saskeyname)
+        {
+            
+            string key = await GetServiceBusKeyAsync(servicebusnamespace, saskeyname);
+            return  $"Endpoint=sb://{servicebusnamespace}.servicebus.windows.net/;SharedAccessKeyName={saskeyname};SharedAccessKey={key}";
+        }
+        private  async Task<string> GetServiceBusKeyAsync(string servicebusnamespace, 
+                                                         string saskeyname )
         {
             if (servicebusnamespace == null) { throw new ArgumentNullException(nameof(servicebusnamespace)); }
             if (_group == null) { throw new NullReferenceException(nameof(_group)); }
 
             ServiceBusNamespaceResource serviceBus= await _group.GetServiceBusNamespaceAsync(servicebusnamespace);
             ServiceBusNamespaceAuthorizationRuleResource rule= await serviceBus.GetServiceBusNamespaceAuthorizationRuleAsync(saskeyname);
-
+            
             
             ServiceBusAccessKeys keys=await rule.GetKeysAsync();
             if (keys == null) { throw new NullReferenceException(nameof(keys)); }

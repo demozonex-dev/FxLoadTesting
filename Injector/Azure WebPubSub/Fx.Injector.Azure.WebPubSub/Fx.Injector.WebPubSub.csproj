@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Contract\Receiver\Fx.IReceiver.csproj" />
+    <ProjectReference Include="..\..\..\Contract\Injector\Fx.Injector\Fx.IInjector.csproj" />
   </ItemGroup>
 
 </Project>

@@ -50,6 +50,7 @@ namespace Fx.Receiver
 
         private async Task _processor_ProcessMessageAsync(ProcessMessageEventArgs arg)
         {
+            if (arg == null) throw new ArgumentNullException(nameof(arg));
             string MessageReceive = arg.Message.Body.ToString();
             if (Response!=null)
             {

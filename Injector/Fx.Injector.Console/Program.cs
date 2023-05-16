@@ -1,11 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Azure.Core;
-using Azure.Messaging.EventGrid.SystemEvents;
 using Fx.ArmManager;
 using Fx.Injector;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 TokenCredential tokenCredential = await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
@@ -31,6 +28,9 @@ if (arguments.Length > 1)
             break;
         case "servicebus":            
             injector=await CreateServiceBusInjector(resourceClient, parameterSection);
+            break;
+        case "webpubsub":
+            injector=await CreateWebPubSubInjector(resourceClient, parameterSection);
             break;
         default:
             Console.WriteLine("Unknow injector : eventgrid, servicebus");
@@ -64,6 +64,25 @@ string host=Fx.Helpers.NetworkInfo.GetHostName();
     }
 }
 
+static async Task<IInjector> CreateWebPubSubInjector(ResourceClient resourceclient, 
+                                                     IConfigurationSection parametersection)
+{
+    Console.WriteLine("Demo sending Message to WebPubSub (WebSocket)");
+    Console.WriteLine("Enter any key to send the messages");
+    Console.ReadLine();
+    string? webPubSub = parametersection["webpubsub:value"];
+    if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
+    string? hubname = parametersection["webpubsubhubname:value"];
+    if (hubname == null) { throw new NullReferenceException(nameof(hubname)); }
+
+
+    //TODO Get Connection string via code
+    string? connectionString = await resourceclient.GetWebPubSubConnectionStringAsync(webPubSub);
+    if (connectionString == null) { throw new NullReferenceException(nameof(connectionString)); }
+
+    return new WebPubSub(connectionString, hubname);
+
+}
 static async Task<IInjector> CreateServiceBusInjector(ResourceClient resourceclient, IConfigurationSection parametersection)
 {
     Console.WriteLine("Demo sending Message to Service Bus");
@@ -78,9 +97,9 @@ static async Task<IInjector> CreateServiceBusInjector(ResourceClient resourcecli
     string? sasKeyName = parametersection["saskeyname:value"];
     if (sasKeyName == null) { throw new NullReferenceException(nameof(sasKeyName)); }
 
-    string connectionString = await resourceclient.GetServiceBusConnectionStringAsync(serviceBus, sasKeyName);
-    //return new ServiceBus(serviceBus,serviceBusQueue, credential);
-    return new Fx.Injector.ServiceBus(connectionString, serviceBusQueue);
+    string? connectionString = await resourceclient.GetServiceBusConnectionStringAsync(serviceBus, sasKeyName);
+    
+    return new ServiceBus(connectionString, serviceBusQueue);
 
 }
 

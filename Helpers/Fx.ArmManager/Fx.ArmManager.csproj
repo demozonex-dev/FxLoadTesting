@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,6 +13,7 @@
     <PackageReference Include="Azure.ResourceManager.EventGrid" Version="1.0.1" />
     <PackageReference Include="Azure.ResourceManager.Relay" Version="1.1.1" />
     <PackageReference Include="Azure.ResourceManager.ServiceBus" Version="1.0.0" />
+    <PackageReference Include="Azure.ResourceManager.WebPubSub" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

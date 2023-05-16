@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\Helpers\Fx.Helpers\Fx.Helpers.csproj" />
     <ProjectReference Include="..\Azure EventGrid\Fx.Injector.Azure.EventGrid\Fx.Injector.EventGrid.csproj" />
     <ProjectReference Include="..\Azure ServiceBus\Fx.Injector.Azure.ServiceBus\Fx.Injector.ServiceBus.csproj" />
+    <ProjectReference Include="..\Azure WebPubSub\Fx.Injector.Azure.WebPubSub\Fx.Injector.WebPubSub.csproj" />
   </ItemGroup>
 
 </Project>

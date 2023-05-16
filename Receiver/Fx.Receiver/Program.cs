@@ -21,13 +21,15 @@ Action<string> ReturnMessage = (message) =>
     Console.WriteLine(message);
 };
 
-
+//Create the App Configuration builder in order to get the parameters
 var config = Fx.Helpers.Configuration.Create();
 var parametersSection = config.GetSection("parameters");
 string? resourceGroupName = parametersSection["resourcegroup:value"];
 if (resourceGroupName == null) { throw new NullReferenceException(nameof(resourceGroupName)); }
 
-TokenCredential credential = await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
+//Authentication to Azure with device code
+TokenCredential credential = 
+    await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
 ResourceClient resourceClient = new ResourceClient();
 await resourceClient.EasyInitAsync(resourceGroupName, credential);
 IReceiver? receiver=null;
@@ -40,10 +42,13 @@ if (arguments.Length > 1) {
             receiver= await CreateRelayReceiverAsync(resourceClient, parametersSection);
             break;
         case "servicebus":
-            receiver= await CreateServiceBusReceiverAsync(resourceClient, credential, parametersSection);
+            receiver= await CreateServiceBusReceiverAsync(resourceClient,  parametersSection);
+            break;
+        case "webpubsub":
+            receiver = await CreateWebSocketReceiverAsync(resourceClient, parametersSection);
             break;
         default:
-            Console.WriteLine("Unknow receiver : relay, servicebus");
+            Console.WriteLine("Unknow receiver : relay, servicebus, ");
             break;
     }
 }
@@ -51,7 +56,9 @@ else
 {
     Console.WriteLine("missing receiver : relay, servicebus");
     
-};
+}
+
+
 
 if (receiver != null) 
 {
@@ -61,10 +68,26 @@ if (receiver != null)
 }
 
 
-
-static async Task<IReceiver> CreateServiceBusReceiverAsync(ResourceClient resourceclient,TokenCredential? credential, IConfigurationSection parameterssection)
+static async Task<IReceiver?> CreateWebSocketReceiverAsync(ResourceClient resourceclient, 
+                                                     IConfigurationSection parametersection)
 {
-    if (credential == null) { throw new ArgumentNullException(nameof(credential)); }
+    string? webPubSub = parametersection["webpubsub:value"];
+    if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
+    string? hubname = parametersection["webpubsubhubname:value"];
+    if (hubname == null) { throw new NullReferenceException(nameof(hubname)); }
+
+
+    //TODO Get Connection string via code
+    string? connectionString = await resourceclient.GetWebPubSubConnectionStringAsync(webPubSub);
+    if (connectionString == null) { throw new NullReferenceException(nameof(connectionString)); }
+
+    return new WebSocket(connectionString, hubname);
+};
+
+static async Task<IReceiver> CreateServiceBusReceiverAsync(ResourceClient resourceclient,                                                           
+                                                           IConfigurationSection parameterssection)
+{
+    
     if (parameterssection== null) { throw new ArgumentNullException(nameof (parameterssection)); }
 
     string? serviceBus = parameterssection["servicebus:value"];
@@ -78,7 +101,7 @@ static async Task<IReceiver> CreateServiceBusReceiverAsync(ResourceClient resour
     if (sasKeyName == null) { throw new NullReferenceException(nameof(sasKeyName)); }
 
     string connectionString = await resourceclient.GetServiceBusConnectionStringAsync(serviceBus, sasKeyName);
-    //return new ServiceBus(serviceBus,serviceBusQueue, credential);
+    
     return new ServiceBus(serviceBus, serviceBusQueue, connectionString);
 
 

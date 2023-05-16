@@ -41,6 +41,15 @@
         "capacity": 10
       }
 
+    },
+    "webpubsub": {
+      "value": "webpubsubtesting99"
+    },
+    "webpubsubhubname": {
+      "value": "hubnameloadtesting99"
+    },
+    "cnx": {
+      "value": "Endpoint=https://webpubsubtesting99.webpubsub.azure.com;AccessKey=9ljdedqIXViaRBbhgNZO6RxLsAet9vGJFNRVU/750Ow=;Version=1.0;"
     }
   }
 }

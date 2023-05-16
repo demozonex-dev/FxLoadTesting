@@ -5,7 +5,7 @@ using Fx.ArmManager;
 using Microsoft.Extensions.Configuration;
 
 ResourceClient resourceClient = new ResourceClient();
-resourceClient.Login(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode));
+resourceClient.Login(await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.BrowserInteractive));
 await resourceClient.SetDefaultSubscriptionAsync();
 
 var config = Fx.Helpers.Configuration.Create();
@@ -19,10 +19,10 @@ if (location == null) { throw new NullReferenceException(nameof(location)); }
 await resourceClient.SetDefaultResourceGroupAsync(resourceGroupName);
 
 //Execute in order because EventGrid depend on Relay and Service bus for the subscription
-//await CreateRelayAsync(resourceClient, parametersSection, location);
-//await CreateServiceBusAsync(resourceClient, parametersSection, location);
-//await CreateEventGridAsync(resourceClient, parametersSection, location);
-await CreateAppServicePlan(resourceClient, parametersSection, location);
+await CreateRelayAsync(resourceClient, parametersSection, location);
+await CreateServiceBusAsync(resourceClient, parametersSection, location);
+await CreateEventGridAsync(resourceClient, parametersSection, location);
+//await CreateAppServicePlan(resourceClient, parametersSection, location);
 Console.WriteLine("Success !!!!");
 
 static async Task CreateAppServicePlan(ResourceClient resourceClient, IConfiguration  parametersection, string location)
