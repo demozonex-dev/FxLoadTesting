@@ -32,6 +32,8 @@ TokenCredential credential =
     await Fx.Helpers.Identity.AuthenticateAsync(Fx.Helpers.AuthenticationType.DeviceCode);
 ResourceClient resourceClient = new ResourceClient();
 await resourceClient.EasyInitAsync(resourceGroupName, credential);
+
+Console.ForegroundColor = ConsoleColor.Green;
 IReceiver? receiver=null;
 
 string[] arguments = Environment.GetCommandLineArgs();
