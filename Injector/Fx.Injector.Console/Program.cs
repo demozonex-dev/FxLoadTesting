@@ -43,6 +43,8 @@ else
 {
     Console.WriteLine("Unknow injector : eventgrid, servicebus, webpubsub, storagequeue");
 };
+System.Console.WriteLine("Enter any key to send the messages");
+System.Console.ReadLine();
 
 if (injector != null)
 {

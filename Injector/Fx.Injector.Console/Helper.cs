@@ -12,8 +12,7 @@ namespace Fx.Injector
         {
 
             System.Console.WriteLine("Demo sending Message to Storage Queue");
-            System.Console.WriteLine("Enter any key to send the messages");
-            System.Console.ReadLine();
+            
             string? account = parametersection["accountname:value"];
             if (account == null) { throw new NullReferenceException(nameof(account)); }
             string? queueName = parametersection["storagequeue:value"];
@@ -29,7 +28,7 @@ namespace Fx.Injector
                                                              IConfigurationSection parametersection)
         {
             System.Console.WriteLine("Demo sending Message to WebPubSub (WebSocket)");
-            System.Console.WriteLine("Enter any key to send the messages");
+            
             System.Console.ReadLine();
             string? webPubSub = parametersection["webpubsub:value"];
             if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
@@ -47,8 +46,7 @@ namespace Fx.Injector
         internal static async Task<IInjector> CreateServiceBusInjector(ResourceClient resourceclient, IConfigurationSection parametersection)
         {
             System.Console.WriteLine("Demo sending Message to Service Bus");
-            System.Console.WriteLine("Enter any key to send the messages");
-            System.Console.ReadLine();
+           
             string? serviceBus = parametersection["servicebus:value"];
             if (serviceBus == null) { throw new NullReferenceException(nameof(serviceBus)); }
             string? serviceBusQueue = parametersection["servicebusqueue:value"];
@@ -69,9 +67,7 @@ namespace Fx.Injector
         {
 
             System.Console.WriteLine("Demo sending Messages to Event Grid");
-            System.Console.WriteLine("Enter any key to send the messages");
-            System.Console.ReadLine();
-
+            
             string? topicName = parametersection["eventgridtopic:value"];
             if (topicName == null) { throw new NullReferenceException(nameof(topicName)); }
             var eventGridConnectionInfos = await resourceclient.GetEventGridConnectionInfosAsync(topicName);
