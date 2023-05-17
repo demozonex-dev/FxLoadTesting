@@ -43,10 +43,19 @@
 
     },
     "webpubsub": {
-      "value": "webpubsubtesting99"
+      "value": "demopubsubtesting99"
     },
     "webpubsubhubname": {
       "value": "hubnameloadtesting99"
+    },
+    "accountname": {
+      "value": "demofxstorage99"
+    },
+    "storagequeue": {
+      "value": "queueloadtesting99"
+    },
+    "cnx": {
+      "value": "fakecnx"
     }
   }
 }

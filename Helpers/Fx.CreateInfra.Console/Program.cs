@@ -24,8 +24,8 @@ await resourceClient.SetDefaultResourceGroupAsync(resourceGroupName);
 //await CreateEventGridAsync(resourceClient, parametersSection, location);
 //await CreateAppServicePlan(resourceClient, parametersSection, location);
 
-await CreateWebPubSubAsync(resourceClient, parametersSection, location);
-
+//await CreateWebPubSubAsync(resourceClient, parametersSection, location);
+await CreateStorageAccount(resourceClient, parametersSection, location);
 Console.WriteLine("Success !!!!");
 
 static async Task CreateAppServicePlan(ResourceClient resourceClient, IConfiguration  parametersection, string location)
@@ -125,8 +125,8 @@ static async Task CreateServiceBusAsync(ResourceClient resourceClient,
 }
 
 static async Task CreateWebPubSubAsync(ResourceClient resourceclient,
-                                  IConfigurationSection parametersection,
-                                  string? location)
+                                       IConfigurationSection parametersection,
+                                       string? location)
 {
     string? webPubSub = parametersection["webpubsub:value"];
     if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
@@ -135,4 +135,17 @@ static async Task CreateWebPubSubAsync(ResourceClient resourceclient,
     if (location == null) { throw new NullReferenceException(nameof(location)); }
     Console.WriteLine("Creating WebPubSub");
     await resourceclient.CreateOrUpdateWebPubSubAsync(webPubSub,hubname,location);
+}
+
+static async Task CreateStorageAccount(ResourceClient resourceclient,
+                                       IConfigurationSection parametersection,
+                                       string? location)
+{
+    string? account = parametersection["accountname:value"];
+    if (account == null) { throw new NullReferenceException(nameof(account)); }
+    string? queueName = parametersection["storagequeue:value"];
+    if (queueName == null) { throw new NullReferenceException(nameof(queueName)); }
+    if (location == null) { throw new NullReferenceException(nameof(location)); }
+    Console.WriteLine("Creating Storage Account");
+    await resourceclient.CreateOrUpdateStorageAccountAsync(account,queueName,location);
 }

@@ -35,8 +35,9 @@ await resourceClient.EasyInitAsync(resourceGroupName, credential);
 IReceiver? receiver=null;
 
 string[] arguments = Environment.GetCommandLineArgs();
-if (arguments.Length > 1) { 
-    switch (arguments[1]) 
+if (arguments.Length > 1) {
+    string feature = arguments[1].ToLower();
+    switch (feature) 
     {
         case "relay":
             receiver= await CreateRelayReceiverAsync(resourceClient, parametersSection);
@@ -47,15 +48,18 @@ if (arguments.Length > 1) {
         case "webpubsub":
             receiver = await CreateWebSocketReceiverAsync(resourceClient, parametersSection);
             break;
+        case "storagequeue":
+            receiver = await CreateStorageQueueReceiver(resourceClient, parametersSection);
+            break;
         default:
-            Console.WriteLine("Unknow receiver : relay, servicebus, ");
+            Console.WriteLine("Unknow receiver : relay, servicebus, webpubsub, storagequeue ");
             break;
     }
 }
 else
 {
-    Console.WriteLine("missing receiver : relay, servicebus");
-    
+    Console.WriteLine("Unknow receiver : relay, servicebus, webpubsub, storagequeue ");
+
 }
 
 
@@ -67,9 +71,23 @@ if (receiver != null)
     await receiver.StartAsync();
 }
 
+static async Task<IReceiver?> CreateStorageQueueReceiver(ResourceClient resourceclient,
+                                                         IConfigurationSection parametersection)
+{
+    string? account = parametersection["accountname:value"];
+    if (account == null) { throw new NullReferenceException(nameof(account)); }
+    string? queueName = parametersection["storagequeue:value"];
+    if (queueName == null) { throw new NullReferenceException(nameof(queueName)); }
 
+
+
+    string? connectionString = await resourceclient.GetStorageConnectionStringAsync(account);
+    if (connectionString == null) { throw new NullReferenceException(nameof(connectionString)); }
+
+    return new StorageQueue(connectionString, queueName);
+}
 static async Task<IReceiver?> CreateWebSocketReceiverAsync(ResourceClient resourceclient, 
-                                                     IConfigurationSection parametersection)
+                                                           IConfigurationSection parametersection)
 {
     string? webPubSub = parametersection["webpubsub:value"];
     if (webPubSub == null) { throw new NullReferenceException(nameof(webPubSub)); }
@@ -77,7 +95,7 @@ static async Task<IReceiver?> CreateWebSocketReceiverAsync(ResourceClient resour
     if (hubname == null) { throw new NullReferenceException(nameof(hubname)); }
 
 
-    //TODO Get Connection string via code
+    
     string? connectionString = await resourceclient.GetWebPubSubConnectionStringAsync(webPubSub);
     if (connectionString == null) { throw new NullReferenceException(nameof(connectionString)); }
 

@@ -64,7 +64,7 @@ namespace Fx.Receiver
                 Response(message);
             }            
         }
-        public async Task Stop()
+        public async Task StopAsync()
         {
             if (_listener != null)
             {

@@ -13,6 +13,9 @@ using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Azure.ResourceManager.WebPubSub;
 using Azure.ResourceManager.WebPubSub.Models;
+using Azure.ResourceManager.Storage;
+using Azure.ResourceManager.Storage.Models;
+using Azure.Storage.Queues;
 
 namespace Fx.ArmManager
 {
@@ -29,12 +32,13 @@ namespace Fx.ArmManager
         private RelayNamespaceResource? _relay;
         private RelayHybridConnectionResource? _hybridConnection;
         private ServiceBusQueueResource? _serviceBusQueue;
-
+        private TokenCredential _tokenCredential;
         public void Login(TokenCredential tokencredential)
         {
             if (tokencredential == null) { throw new ArgumentNullException(nameof(tokencredential)); }
             Client = new ArmClient(tokencredential);
             if (Client == null) { throw new NullReferenceException(nameof(Client)); }         
+            _tokenCredential = tokencredential;
         }
 
 
@@ -84,6 +88,21 @@ namespace Fx.ArmManager
             if (key == null) { throw new ArgumentNullException(nameof(key)); }
             return key.Value.PrimaryConnectionString;
             
+        }
+        public async Task<string> GetStorageConnectionStringAsync(string accountname)
+        {
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+            if (accountname == null) { throw new ArgumentNullException(nameof(accountname)); }
+            var storage = await _group.GetStorageAccountAsync(accountname);
+
+            if (storage == null) { throw new NullReferenceException(nameof(storage)); }
+            var keys = storage.Value.GetKeys();
+            if (keys == null) { throw new ArgumentNullException(nameof(keys)); }            
+            StorageAccountKey? key = keys.FirstOrDefault<StorageAccountKey>();
+            if (key == null) { throw new NullReferenceException(nameof(key));}
+            
+            return $"DefaultEndpointsProtocol=https;AccountName={accountname};AccountKey={key.Value};EndpointSuffix=core.windows.net";
+
         }
         public async Task<string> GetServiceBusConnectionStringAsync(string servicebusnamespace,
                                                                      string saskeyname)
@@ -260,6 +279,40 @@ namespace Fx.ArmManager
                                                                    }));
 
         }
+        public async Task CreateOrUpdateStorageAccountAsync(string accountname,
+                                                            string queue,
+                                                            string location)
+        {
+            if (location == null) { throw new ArgumentNullException(nameof(location)); }
+            if (queue == null) { throw new ArgumentNullException(nameof(queue)); }
+            if (accountname == null) { throw new ArgumentNullException(nameof(accountname)); }
+            if (_group == null) { throw new NullReferenceException(nameof(_group)); }
+
+            var storageAccountContent = new StorageAccountCreateOrUpdateContent(
+                                                                new StorageSku(StorageSkuName.StandardLrs),
+                                                                               StorageKind.StorageV2,
+                                                                               new AzureLocation(location));
+            
+
+
+            var armOperation = await _group.GetStorageAccounts()
+                                          .CreateOrUpdateAsync(Azure.WaitUntil.Completed,
+                                                                accountname,
+                                                                storageAccountContent
+                     
+                                                                );
+            
+            string connectionString= await GetStorageConnectionStringAsync(accountname);
+
+
+            QueueClient queueClient = new QueueClient(connectionString,queue);
+            var response=await queueClient.CreateIfNotExistsAsync();
+            
+            
+            
+                                                              
+                                                          
+        }
         public async Task CreateOrUpdateServiceBusAsync(string servicebusname,                                                        
                                                         string queue,
                                                         string topic,
@@ -267,6 +320,9 @@ namespace Fx.ArmManager
         {
             if (location == null) { throw new ArgumentNullException(nameof(location)); }
             if (servicebusname == null) { throw new ArgumentNullException(nameof(servicebusname)); }
+            if (queue==null) { throw new ArgumentNullException(nameof(queue)); }
+            if (topic==null) { throw new ArgumentNullException(nameof(topic)); }
+
             if (_group == null) { throw new NullReferenceException(nameof(_group)); }
 
             var armOperation = await _group.GetServiceBusNamespaces()

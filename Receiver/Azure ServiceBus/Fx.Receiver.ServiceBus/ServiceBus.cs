@@ -86,7 +86,7 @@ namespace Fx.Receiver
             await _processor.StopProcessingAsync();
         }
 
-        public async Task Stop()
+        public async Task StopAsync()
         {
             if (_processor != null)
             {

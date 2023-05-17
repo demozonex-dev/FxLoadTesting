@@ -9,7 +9,7 @@ namespace Fx.Receiver
         public Action<string> Response { get; set; }
         public Action<string> Wait { get; set; }
         public Task StartAsync();
-        public Task Stop();
+        public Task StopAsync();
         public string ReceiverType { get;  }
 
 

@@ -43,10 +43,11 @@ namespace Fx.Receiver
             var rcvBytes = new byte[128];
             var rcvBuffer = new ArraySegment<byte>(rcvBytes);
             var cts = new CancellationTokenSource();
-            //Pas bo
+            
             await Task.Factory.StartNew(
                 async () =>
                 {
+                    //Pas bo
                     while (true)
                     {
                         WebSocketReceiveResult rcvResult = await clientWebSocket.ReceiveAsync(rcvBuffer, CancellationToken.None);
@@ -63,7 +64,7 @@ namespace Fx.Receiver
             Wait(MESSAGE);
             await _webPubSubServiceClient.CloseAllConnectionsAsync();
         }
-        public async Task Stop()
+        public async Task StopAsync()
         {
             if (_webPubSubServiceClient != null)
             {
