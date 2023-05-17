@@ -14,7 +14,7 @@ if (resourceGroupName == null) { throw new NullReferenceException(nameof(resourc
 ResourceClient resourceClient = new ResourceClient();
 await resourceClient.EasyInitAsync(resourceGroupName, tokenCredential);
 string[] arguments = Environment.GetCommandLineArgs();
-short maxMessage = 2;
+int maxMessage = 2;
 Console.ForegroundColor = ConsoleColor.Yellow;
 
 IInjector? injector = null;
@@ -44,7 +44,9 @@ else
     Console.WriteLine("Unknow injector : eventgrid, servicebus, webpubsub, storagequeue");
 };
 System.Console.WriteLine("Enter any key to send the messages");
-System.Console.ReadLine();
+Console.WriteLine("How many messages do you want to send ? (default 2) ");
+string numMessage= Console.ReadLine(); 
+int.TryParse(numMessage, out maxMessage);
 
 if (injector != null)
 {
